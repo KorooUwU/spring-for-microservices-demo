@@ -1,0 +1,41 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:h2:mem:orderdb;DB_CLOSE_DELAY=-1
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+resilience4j:
+  circuitbreaker:
+    instances:
+      productLookup:
+        ignoreExceptions:
+          - feign.FeignException$NotFound
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 4
+        minimumNumberOfCalls: 2
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+spring.cloud.openfeign.client.config.default.connectTimeout: 1500
+spring.cloud.openfeign.client.config.default.readTimeout: 1500
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+---
+# Tests use local H2 and a mocked ProductClient without external infrastructure.
+spring:
+  config:
+    activate:
+      on-profile: "!test"
+    import: configserver:${CONFIG_SERVER_URL:http://localhost:8888}

@@ -1,0 +1,3 @@
+# Order Service config can be changed here.
+shop:
+  order-note: "Independent Order database"

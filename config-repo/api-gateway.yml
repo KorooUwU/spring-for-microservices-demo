@@ -1,0 +1,19 @@
+# Centralized configuration for API Gateway
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: products
+              uri: lb://product-service
+              predicates:
+                - Path=/api/products/**,/api/products
+              filters:
+                - StripPrefix=1
+            - id: orders
+              uri: lb://order-service
+              predicates:
+                - Path=/api/orders/**,/api/orders
+              filters:
+                - StripPrefix=1

@@ -1,0 +1,36 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: configserver:${CONFIG_SERVER_URL:http://localhost:8888}
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: products
+              uri: lb://product-service
+              predicates:
+                - Path=/api/products/**,/api/products
+              filters:
+                - StripPrefix=1
+            - id: orders
+              uri: lb://order-service
+              predicates:
+                - Path=/api/orders/**,/api/orders
+              filters:
+                - StripPrefix=1
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  endpoint:
+    gateway:
+      access: read-only
