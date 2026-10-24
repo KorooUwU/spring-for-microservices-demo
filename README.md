@@ -46,7 +46,7 @@ Invoke-RestMethod http://localhost:8080/api/orders
 ```
 Hoặc chạy `./scripts/demo.ps1` trong PowerShell.
 
-### Demo Circuit Breaker (quan trọng khi báo cáo)
+### Demo Circuit Breaker 
 1. Gọi `POST http://localhost:8080/api/orders` để tạo đơn thành công.
 2. Dừng Product: `docker compose stop product-service`.
 3. Gọi lại POST nhiều lần cùng JSON. Order Service trả **HTTP 503**, thông báo Product Service không sẵn sàng, **không tạo đơn giả với giá 0**.
@@ -79,7 +79,6 @@ docker compose down
 ```
 
 ## Ghi chú
-- Đây là **mã nguồn tạo mới** để minh họa kiến trúc từ PPTX, không phải bản sao project trong sách.
 - Không có xác thực người dùng, event-driven messaging hoặc transaction phân tán. Không dùng nguyên trạng cho production.
 - Spring Cloud và Spring Boot phải chọn release tương thích; xem https://spring.io/projects/spring-cloud/
 - Gateway dùng `spring.cloud.gateway.server.webflux.routes` phù hợp Spring Cloud Gateway mới.
