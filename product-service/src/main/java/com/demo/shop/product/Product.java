@@ -1,13 +1,36 @@
 package com.demo.shop.product;
+
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+
+//JPA
 @Entity
-@Table(name="products")
+@Table(name = "products")
 public class Product {
- @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id;
- private String name;
- @Column(nullable=false) private BigDecimal price;
- protected Product(){}
- public Product(String name,BigDecimal price){this.name=name;this.price=price;}
- public Long getId(){return id;} public String getName(){return name;} public BigDecimal getPrice(){return price;}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    protected Product() {
+    }
+
+    public Product(String name, BigDecimal price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
 }

@@ -7,6 +7,17 @@ spring:
     import: configserver:${CONFIG_SERVER_URL:http://localhost:8888}
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
       server:
         webflux:
           routes:
@@ -22,6 +33,18 @@ spring:
                 - Path=/api/orders/**,/api/orders
               filters:
                 - StripPrefix=1
+            - id: product-service-docs
+              uri: lb://product-service
+              predicates:
+                - Path=/v3/api-docs/product-service
+              filters:
+                - SetPath=/v3/api-docs
+            - id: order-service-docs
+              uri: lb://order-service
+              predicates:
+                - Path=/v3/api-docs/order-service
+              filters:
+                - SetPath=/v3/api-docs
 eureka:
   client:
     service-url:
@@ -34,3 +57,11 @@ management:
   endpoint:
     gateway:
       access: read-only
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: 1. Product Service
+        url: /v3/api-docs/product-service
+      - name: 2. Order Service
+        url: /v3/api-docs/order-service

@@ -28,21 +28,24 @@ docker compose logs -f api-gateway
 ```
 Build lần đầu cần mạng để tải image và dependencies. Mỗi container có healthcheck; Compose chờ các dependency đạt `service_healthy` rồi mới khởi động service tiếp theo. Config Server được kiểm tra qua endpoint cấp cấu hình `/product-service/default`; các service còn lại dùng `/actuator/health`. Image runtime cài curl để chạy healthcheck. Lệnh `--wait` chờ toàn bộ container healthy. Eureka vẫn cần thời gian đồng bộ registry, vì vậy nếu request đầu tiên trả 503, đợi vài giây rồi thử lại. Xem `docker compose ps` và `docker compose logs` nếu có service không healthy.
 
-### Đường dẫn kiểm tra
-- Eureka Dashboard: http://localhost:8761
-- Config Server: http://localhost:8888/product-service/default
-- Gateway: http://localhost:8080/api/products
-- Config value: http://localhost:8080/api/products/meta/banner
-- Orders: http://localhost:8080/api/orders
-- Health: http://localhost:8080/actuator/health
+### Đường dẫn kiểm tra trực quan
+- **Web Dashboard (Next.js UI)**: http://localhost:3000 *(Giao diện web trực quan kết nối toàn bộ hệ thống microservices)*
+- **Swagger UI tập trung (Gateway)**: http://127.0.0.1:8080/swagger-ui.html *(Xem & test toàn bộ API tại đây, chọn service ở menu góc trên)*
+- **Swagger UI Product Service**: http://127.0.0.1:8081/swagger-ui.html
+- **Swagger UI Order Service**: http://127.0.0.1:8082/swagger-ui.html
+- **Eureka Dashboard**: http://127.0.0.1:8761
+- **Config Server**: http://127.0.0.1:8888/product-service/default
+- **Gateway Health**: http://127.0.0.1:8080/actuator/health
+
+> **Lưu ý mạng Windows:** Nên dùng `127.0.0.1` thay cho `localhost` để tránh xung đột cổng IPv6 `[::1]` của WSL2 gây treo trình duyệt.
 
 ### Demo API bằng PowerShell
 ```powershell
-Invoke-RestMethod http://localhost:8080/api/products
-Invoke-RestMethod http://localhost:8080/api/products/1
-Invoke-RestMethod http://localhost:8080/api/products/meta/banner
-Invoke-RestMethod -Method POST http://localhost:8080/api/orders -ContentType 'application/json' -Body '{"productId":1,"quantity":2}'
-Invoke-RestMethod http://localhost:8080/api/orders
+Invoke-RestMethod http://127.0.0.1:8080/api/products
+Invoke-RestMethod http://127.0.0.1:8080/api/products/1
+Invoke-RestMethod http://127.0.0.1:8080/api/products/meta/banner
+Invoke-RestMethod -Method POST http://127.0.0.1:8080/api/orders -ContentType 'application/json' -Body '{"productId":1,"quantity":2}'
+Invoke-RestMethod http://127.0.0.1:8080/api/orders
 ```
 Hoặc chạy `./scripts/demo.ps1` trong PowerShell.
 

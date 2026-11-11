@@ -5,6 +5,11 @@ spring:
     name: order-service
   datasource:
     url: jdbc:h2:mem:orderdb;DB_CLOSE_DELAY=-1
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -28,6 +33,9 @@ resilience4j:
 spring.cloud.openfeign.client.config.default.connectTimeout: 1500
 spring.cloud.openfeign.client.config.default.readTimeout: 1500
 management:
+  health:
+    circuitbreakers:
+      enabled: true
   endpoints:
     web:
       exposure:

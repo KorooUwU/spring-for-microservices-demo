@@ -1,0 +1,28 @@
+### 1. Lấy danh sách sản phẩm qua Gateway
+GET http://127.0.0.1:8080/api/products
+Accept: application/json
+
+### 2. Lấy chi tiết sản phẩm 1 qua Gateway
+GET http://127.0.0.1:8080/api/products/1
+Accept: application/json
+
+### 3. Lấy banner cấu hình từ Config Server
+GET http://127.0.0.1:8080/api/products/meta/banner
+Accept: application/json
+
+### 4. Tạo đơn hàng mới (Demo OpenFeign gọi Product và Circuit Breaker)
+POST http://127.0.0.1:8080/api/orders
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### 5. Lấy danh sách tất cả các đơn hàng
+GET http://127.0.0.1:8080/api/orders
+Accept: application/json
+
+### 6. Kiểm tra Healthcheck của hệ thống
+GET http://127.0.0.1:8080/actuator/health
+Accept: application/json
